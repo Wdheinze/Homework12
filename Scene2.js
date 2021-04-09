@@ -11,13 +11,15 @@ class Scene2 extends Phaser.Scene {
         platforms = this.physics.add.staticGroup();
         platforms.create(100, 800, 'ground').setScale(2).refreshBody();
 
-        platforms.create(600, 400, 'ground');
+        platforms.create(600, 500, 'ground');
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
         platforms.create(800, 220, 'ground');
+        platforms.create(50, 600, 'ground');
 
 
-        player = this.physics.add.sprite(100, 450, 'dude');
+
+        player = this.physics.add.sprite(100, 700, 'dude');
         player.setBounce(0.3);
         player.setCollideWorldBounds(true);
 
@@ -44,6 +46,14 @@ class Scene2 extends Phaser.Scene {
 
         cursors = this.input.keyboard.createCursorKeys();
 
+        spikes = this.physics.add.group({
+            key: 'spikes',
+            repeat: 4,
+            setXY: { x: 11, y: 400, stepX: 30, }
+
+
+        });
+
         stars = this.physics.add.group({
             key: 'star',
             repeat: 11,
@@ -62,11 +72,81 @@ class Scene2 extends Phaser.Scene {
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         this.physics.add.collider(player, platforms);
         this.physics.add.collider(stars, platforms);
-
+        this.physics.add.collider(spikes, platforms)
         this.physics.add.collider(bombs, platforms);
 
 
 
-        this.add.text(200, 20, "Game is Loaded", { font: "25px Arial", fill: "yellow" })
+        this.add.text(200, 20, "Welcome to the Game", { font: "25px Arial", fill: "yellow" })
+
+        function update() {
+            if (gameOver) {
+                return;
+            }
+
+            if (cursors.left.isDown) {
+                player.setVelocityX(-160);
+
+                player.anims.play('left', true);
+            }
+            else if (cursors.right.isDown) {
+                player.setVelocityX(160);
+
+                player.anims.play('right', true);
+            }
+            else {
+                player.setVelocityX(0);
+
+                player.anims.play('turn');
+            }
+
+            if (cursors.up.isDown && player.body.touching.down) {
+                player.setVelocityY(-330);
+            }
+        }
+
+        function collectStar(player, star) {
+            star.disableBody(true, true);
+
+
+            score += 1;
+            scoreText.setText('Score: ' + score);
+
+            if (stars.countActive(true) === 0) {
+                //  A new batch of stars to collect
+                stars.children.iterate(function (child) {
+
+                    child.enableBody(true, child.x, 0, true, true);
+
+                });
+
+                var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+                var bomb = bombs.create(x, 16, 'bomb');
+                bomb.setBounce(1);
+                bomb.setCollideWorldBounds(true);
+                bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+                bomb.allowGravity = false;
+
+            }
+        }
+        function hitSpikes(player, spikes) {
+            this.physics.pause();
+
+            player.setTint(0xff0000);
+
+            player.anims.play('turn');
+
+            gameOver = true;
+        }
+        function hitBomb(player, bomb) {
+            this.physics.pause();
+
+            player.setTint(0xff0000);
+
+            player.anims.play('turn');
+
+            gameOver = true;
+        }
     }
 }
