@@ -47,7 +47,7 @@ class Scene2 extends Phaser.Scene {
 
         spikes = this.physics.add.group({
             key: 'spikes',
-            repeat: 4,
+            repeat: 5,
             setXY: { x: 11, y: 400, stepX: 30, }
 
 
@@ -74,6 +74,11 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(spikes, platforms)
         this.physics.add.collider(bombs, platforms);
 
+        this.physics.add.overlap(player, stars, collectStar, null, this);
+
+        this.physics.add.collider(player, bombs, hitBomb, null, this);
+
+        this.physics.add.collider(player, spikes, hitSpikes, null, this);
 
         this.add.text(200, 20, "Welcome to the Game", { font: "25px Arial", fill: "yellow" })
     }// need to end the create function
@@ -120,6 +125,7 @@ class Scene2 extends Phaser.Scene {
             });
 
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
 
             var bomb = bombs.create(x, 16, 'bomb');
             bomb.setBounce(1);

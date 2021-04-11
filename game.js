@@ -23,6 +23,9 @@ var platforms;
 var cursors;
 var score = 0;
 var gameOver = false;
+var collectStar;
+var hitSpikes;
+var hitBomb;
 var scoreText;
 window.onload = function () {
     var game = new Phaser.Game(config);
