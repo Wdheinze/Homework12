@@ -75,7 +75,6 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bombs, platforms);
 
 
-
         this.add.text(200, 20, "Welcome to the Game", { font: "25px Arial", fill: "yellow" })
     }// need to end the create function
 
