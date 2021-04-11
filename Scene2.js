@@ -9,13 +9,12 @@ class Scene2 extends Phaser.Scene {
         this.background.setOrigin(0, 0);
         //plaTforms
         platforms = this.physics.add.staticGroup();
-        platforms.create(100, 800, 'ground').setScale(2).refreshBody();
+        platforms.create(300, 800, 'ground').setScale(2).refreshBody();
 
-        platforms.create(600, 500, 'ground');
-        platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
-        platforms.create(800, 220, 'ground');
-        platforms.create(50, 600, 'ground');
+        platforms.create(650, 500, 'ground');
+        platforms.create(50, 350, 'ground');
+        platforms.create(750, 320, 'ground');
+        platforms.create(50, 660, 'ground');
 
 
 
@@ -81,77 +80,75 @@ class Scene2 extends Phaser.Scene {
     }// need to end the create function
 
     // don't need the keyword function in front of update
-        update() {
-            if (gameOver) {
-                return;
-            }
-
-            if (cursors.left.isDown) {
-                player.setVelocityX(-160);
-
-                player.anims.play('left', true);
-            }
-            else if (cursors.right.isDown) {
-                player.setVelocityX(160);
-
-                player.anims.play('right', true);
-            }
-            else {
-                player.setVelocityX(0);
-
-                player.anims.play('turn');
-            }
-
-            if (cursors.up.isDown && player.body.touching.down) {
-                player.setVelocityY(-330);
-            }
+    update() {
+        if (gameOver) {
+            return;
         }
 
-        // don't need the keyword function in front of collectStar
-        collectStar(player, star) {
-            star.disableBody(true, true);
+        if (cursors.left.isDown) {
+            player.setVelocityX(-160);
 
-
-            score += 1;
-            scoreText.setText('Score: ' + score);
-
-            if (stars.countActive(true) === 0) {
-                //  A new batch of stars to collect
-                stars.children.iterate(function (child) {
-
-                    child.enableBody(true, child.x, 0, true, true);
-
-                });
-
-                var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-                var bomb = bombs.create(x, 16, 'bomb');
-                bomb.setBounce(1);
-                bomb.setCollideWorldBounds(true);
-                bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-                bomb.allowGravity = false;
-
-            }
+            player.anims.play('left', true);
         }
-        // don't need the function keyword in front of hitSpikes
-        hitSpikes(player, spikes) {
-            this.physics.pause();
+        else if (cursors.right.isDown) {
+            player.setVelocityX(160);
 
-            player.setTint(0xff0000);
+            player.anims.play('right', true);
+        }
+        else {
+            player.setVelocityX(0);
 
             player.anims.play('turn');
-
-            gameOver = true;
         }
-        // don't need the keyword function in front of hitBomb
-        hitBomb(player, bomb) {
-            this.physics.pause();
 
-            player.setTint(0xff0000);
-
-            player.anims.play('turn');
-
-            gameOver = true;
+        if (cursors.up.isDown && player.body.touching.down) {
+            player.setVelocityY(-330);
         }
-   // } // don't need this curly brace
+    }
+
+    // don't need the keyword function in front of collectStar
+    collectStar(player, star) {
+        star.disableBody(true, true);
+        score += 1;
+        scoreText.setText('Score: ' + score);
+
+        if (stars.countActive(true) === 0) {
+            //  A new batch of stars to collect
+            stars.children.iterate(function (child) {
+
+                child.enableBody(true, child.x, 0, true, true);
+
+            });
+
+            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+            var bomb = bombs.create(x, 16, 'bomb');
+            bomb.setBounce(1);
+            bomb.setCollideWorldBounds(true);
+            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            bomb.allowGravity = false;
+
+        }
+    }
+    // don't need the function keyword in front of hitSpikes
+    hitSpikes(player, spikes) {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        gameOver = true;
+    }
+    // don't need the keyword function in front of hitBomb
+    hitBomb(player, bomb) {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        gameOver = true;
+    }
+    // } // don't need this curly brace
 }
