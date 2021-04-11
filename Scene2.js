@@ -78,8 +78,10 @@ class Scene2 extends Phaser.Scene {
 
 
         this.add.text(200, 20, "Welcome to the Game", { font: "25px Arial", fill: "yellow" })
+    }// need to end the create function
 
-        function update() {
+    // don't need the keyword function in front of update
+        update() {
             if (gameOver) {
                 return;
             }
@@ -105,7 +107,8 @@ class Scene2 extends Phaser.Scene {
             }
         }
 
-        function collectStar(player, star) {
+        // don't need the keyword function in front of collectStar
+        collectStar(player, star) {
             star.disableBody(true, true);
 
 
@@ -130,7 +133,8 @@ class Scene2 extends Phaser.Scene {
 
             }
         }
-        function hitSpikes(player, spikes) {
+        // don't need the function keyword in front of hitSpikes
+        hitSpikes(player, spikes) {
             this.physics.pause();
 
             player.setTint(0xff0000);
@@ -139,7 +143,8 @@ class Scene2 extends Phaser.Scene {
 
             gameOver = true;
         }
-        function hitBomb(player, bomb) {
+        // don't need the keyword function in front of hitBomb
+        hitBomb(player, bomb) {
             this.physics.pause();
 
             player.setTint(0xff0000);
@@ -148,5 +153,5 @@ class Scene2 extends Phaser.Scene {
 
             gameOver = true;
         }
-    }
+   // } // don't need this curly brace
 }
